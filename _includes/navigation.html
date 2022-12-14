@@ -1,0 +1,72 @@
+<a href="#main_content" id="skip_nav_link">Skip to content</a>
+<div id="menu_toggle_container">
+  <button class="hamburger" type="button" aria-label="Toggle the menu" aria-controls="navigation">
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="hamburger-label">Menu</span>
+  </button>
+</div>
+
+<nav role="navigation">
+  <div>
+    {%- if site.parent_site -%}
+      <a href="{{site.parent_site.url}}" class="parent-site">
+        <img src="{{ site.url }}/assets/images/{{ site.parent_site.logo }}" alt="{{ site.parent_site.title }}" />
+      </a>
+    {%- endif -%}
+    {%- if site.logo -%}
+      <a href="{{site.url}}" class="header-link">
+        <img src="{{ site.url }}/assets/images/{{ site.logo }}" alt="Site Home" />
+      </a>
+    {%- else -%}
+      <a href="{{site.url}}" class="header-link">Site Home</a>
+    {%- endif -%}
+    {%- if site.searchable -%}
+      <div id="ops_search">
+        <div>
+          <input type="text" id="search-input" placeholder="Search this site" aria-label="Enter a search term to generate realtime search results in the list below.">
+          <img class="clear-search-button" src="{{ site.url }}/assets/images/button-close.png" aria-label="Click to clear search query and results" />
+          <ul id="results-container"></ul>
+          <script>
+            var sjs = SimpleJekyllSearch({
+            searchInput: document.getElementById('search-input'),
+            resultsContainer: document.getElementById('results-container'),
+            json: '{{ site.url }}/search.json'
+          })
+          </script>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  <ul class="nav-list">
+    {%- assign sections = site.collections | sort: 'section_order' -%}
+    {%- for collection in sections -%}
+      {%- if collection.label != 'posts' -%}
+        {%- if page.collection == collection.label -%}
+          <li class="current">
+        {%- else -%}
+          <li>
+        {%- endif -%}
+          <a href="{{site.url}}/{{collection.label}}" class="current" name="{{collection.label}}"><span>{{ collection.section_order }}</span> <span>{{ collection.name }}</span></a>
+          {%- if page.collection == collection.label -%}
+            {%- assign docs = collection.docs | sort: 'order' -%}
+            {%- if docs.size > 1 -%}
+              <ul>
+                {% for item in docs offset:1 %}
+                  {% if page == item %}
+                    <li class="current">
+                  {% else %}
+                    <li>
+                  {% endif %}
+                    <a href="{{item.url}}">{{collection.section_order}}.{{ item.order }} {{ item.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</nav>

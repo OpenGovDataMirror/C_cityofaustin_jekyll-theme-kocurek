@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  {% include head.html %}
+  <body>
+    {% include random_background.html %}
+    {% include navigation.html %}
+    <main id="main_content">
+      <div>
+        {% include print.html %}
+        <h1>{{page.title}}</h1>
+        {{ content }}
+      </div>
+    </main>
+    {% include analytics.html %}
+  </body>
+</html>
